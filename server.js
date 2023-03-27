@@ -18,13 +18,8 @@ app.use(express.json());
 // linking back to front
 app.use(cors());
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 //for deployment on render
-=======
->>>>>>> 2a9d7b9ba2e0db9adc27898ac5bd7b92b4bfe474
-=======
->>>>>>> 2a9d7b9ba2e0db9adc27898ac5bd7b92b4bfe474
+
 app.get("/", (req,res)=>{
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.send("API is running...");
