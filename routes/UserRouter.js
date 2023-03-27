@@ -6,6 +6,7 @@ const User = require("../models/User.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { auth } = require("../middlewares/auth.js");
+const mongoose = require("mongoose");
 
 //defining routes 
 //Register new user
@@ -118,5 +119,56 @@ router.get("/users", auth, async (req, res) => {
     }
     
 });
+// Lock user
+router.put("/user/lock/:id", auth, async (req, res) => {
+    const { id } = req.params;
+    
+    try {
+        const lockUser = await User.findByIdAndUpdate(
+            id, User.update({$set:{isBlocked:true}}), 
+            {new: true},
+        );
+        res.status(200).json(lockUser);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+    });
+// unlock user
+router.put("/user/unlock/:id", auth, async (req, res) => {
+const { id } = req.params;
+
+try {
+    const unlockUser = await User.findByIdAndUpdate(
+        id, User.update({$set:{isBlocked:false}}), 
+        {new: true},
+    );
+    res.status(200).json(unlockUser);
+} catch (error) {
+    res.status(500).json({ message: error.message });
+}
+});
+//
+    router.delete("/user/delete/:id", auth, async (req, res) => {
+        const { id } = req.params;
+        
+        if (!id) return res.status(400).json({ error: "id not found!" });
+        
+        if (!mongoose.isValidObjectId(id))
+            return res.status(400).json({ error: "id not valid!" });
+        try {
+            const user = await User.findOne({ _id: id });
+            if (!user) return res.status(400).json({ error: "Contact not found!" });
+        
+            const result = await User.deleteOne({ _id: id });
+            const Users = await User.find({ postedBy: req.user._id }).populate(
+            "postedBy",
+            "-password"
+            );
+        
+            return res.status(200).json({ result, Users});
+        } catch (err) {
+            console.log(err);
+        }
+        });
 
 module.exports = router;
