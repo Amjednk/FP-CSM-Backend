@@ -76,24 +76,20 @@ router.post("/login", async (req, res)=> {
         );
     };
     if (!validateEmail(email))
-        return res.status(400).json({message: "invalid email or password"});
+        return res.status(400).json({message: "please enter a valid email"});
     try {
         //check for registered users
         const userFound = await User.findOne({ email });
-        if (!userFound) {
+        const passwordMatch = await bcrypt.compare(
+            password,
+            userFound.password,
+        );
+        if (!userFound || !passwordMatch ) {
             return res.status(401).json({ message: "invalid email or password."});
         }
         if (userFound.isBlocked) {
             return res.status(401).json({ message: "Account locked, please contact the admin!"});
         }
-        // if user found
-        const passwordMatch = await bcrypt.compare(
-            password,
-            userFound.password
-        );
-        //check for password
-        if (!passwordMatch)
-            return res.status(400).json({ error: "invalid email or password!" });
         //matching ID and generating a protected token
         const payload = { _id: userFound._id };
         const token = jwt.sign(payload, process.env.SECRET, {
