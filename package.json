@@ -6,13 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js"
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 2a9d7b9ba2e0db9adc27898ac5bd7b92b4bfe474
-    
->>>>>>> 2a9d7b9ba2e0db9adc27898ac5bd7b92b4bfe474
   },
   "author": "AK",
   "license": "ISC",

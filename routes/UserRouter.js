@@ -120,7 +120,7 @@ router.get("/users", auth, async (req, res) => {
     
 });
 // Lock user
-router.put("/user/lock/:id", auth, async (req, res) => {
+router.put("/user/lock/:id", async (req, res) => {
     const { id } = req.params;
     
     try {
@@ -134,7 +134,7 @@ router.put("/user/lock/:id", auth, async (req, res) => {
     }
     });
 // unlock user
-router.put("/user/unlock/:id", auth, async (req, res) => {
+router.put("/user/unlock/:id", async (req, res) => {
 const { id } = req.params;
 
 try {
